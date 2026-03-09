@@ -1253,6 +1253,232 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
   font-weight: 600;
   margin-top: 12px;
 }
+
+/* ===== PAYMENT METHODS ===== */
+.payment-methods {
+  text-align: center;
+  margin-top: 50px;
+  padding: 28px 32px;
+  background: var(--snow);
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 50px auto 0;
+  border: 1px solid rgba(77,184,240,0.15);
+}
+.payment-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+.payment-icons {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pay-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.pay-icon span {
+  font-size: 0.72rem;
+  color: #7a9ab8;
+  font-weight: 500;
+}
+.pay-icon svg {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* ===== CART ===== */
+#cart-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 900;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  padding: 14px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 30px rgba(26,110,189,0.4);
+  transition: all 0.3s;
+}
+#cart-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(26,110,189,0.5); }
+#cart-badge {
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  font-size: 0.7rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+#cart-badge.show { display: flex; }
+
+/* CART MODAL */
+#cart-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: none;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 20px;
+}
+#cart-modal.open { display: flex; }
+.cart-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+}
+.cart-panel {
+  position: relative;
+  background: var(--white);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 32px 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+}
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.cart-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.cart-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--snow);
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.cart-close:hover { background: rgba(77,184,240,0.15); }
+.cart-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #7a9ab8;
+  font-size: 0.9rem;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(77,184,240,0.12);
+  gap: 12px;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); }
+.cart-item-price { font-size: 0.82rem; color: var(--blue-dark); font-weight: 600; margin-top: 3px; }
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: #c0c8d4;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.cart-item-remove:hover { background: #fff0f0; color: #ff4757; }
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0 0;
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+}
+.cart-total-amount { color: var(--blue-dark); font-size: 1.3rem; }
+.btn-checkout {
+  margin-top: 20px;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 25px rgba(26,110,189,0.35);
+}
+.btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(26,110,189,0.45); }
+.btn-checkout:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+/* ADD TO CART BUTTONS on price cards */
+.price-cta-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.btn-add-cart {
+  display: block;
+  text-align: center;
+  padding: 11px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  color: var(--white);
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+}
+.btn-add-cart:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,110,189,0.35); }
+.price-card.featured .btn-add-cart {
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.price-card.featured .btn-add-cart:hover { background: rgba(255,255,255,0.35); }
+
+/* CHECKOUT SUCCESS */
+.checkout-success {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  background: rgba(77,184,240,0.1);
+  border-radius: 14px;
+  color: var(--blue-dark);
+  font-weight: 600;
+  margin-top: 12px;
+  font-size: 0.88rem;
+}
+
 </style>
 </head>
 <body>
@@ -1337,9 +1563,9 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
   </div>
   <div class="about-text">
     <div class="section-label reveal">Mon histoire</div>
-    <h2 class="section-title reveal">Je suis <em>Nadège</em>,<br>votre guide vers<br>le succès</h2>
+    <h2 class="section-title reveal">Je suis <em>Nadège</em>,<br>votre conseillère pour vous<br>guider vers le succès</h2>
     <p class="section-subtitle reveal">
-      Chargée de développement, des admissions et alternance, je travaille dans le domaine de l'enseignement depuis plus de 2 ans. J'aime accompagner et conseiller les personnes pour qu'elles prennent les meilleures décisions concernant leurs choix scolaires et professionnels.
+      Actuellement je suis chargée de développement, des admissions et alternance. Je travaille dans le domaine de l'enseignement depuis plus de 2 ans. J'aime accompagner et conseiller les personnes pour qu'elles prennent les meilleures décisions concernant leurs choix scolaires et professionnels.
     </p>
     <div class="about-values reveal">
       <div class="about-value">
@@ -1459,48 +1685,68 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
   </div>
   <div class="pricing-grid">
     <div class="price-card reveal">
-      <div class="price-badge">Essentiel</div>
-      <div class="price-title">Coaching 30–45 min</div>
+      <div class="price-badge">Libération</div>
+      <div class="price-title">Osez Parler</div>
       <div class="price-amount">20€</div>
-      <div class="price-desc">Séance de coaching scolaire ou professionnel courte et efficace. Idéal pour un point rapide ou une question précise.</div>
-      <a href="#contact" class="price-cta">Réserver</a>
+      <div class="price-desc">Échange pour se libérer des échecs, des doutes ou des traumatismes. Un espace safe et bienveillant juste pour vous.</div>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Osez Parler – Se libérer', 20)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card featured reveal">
       <div class="price-badge">⭐ Populaire</div>
       <div class="price-title">Coaching 1h – 1h30</div>
       <div class="price-amount">30€</div>
       <div class="price-desc">La formule idéale pour un accompagnement approfondi. Nous prenons le temps d'explorer votre situation et de définir un plan d'action clair.</div>
-      <a href="#contact" class="price-cta">Réserver</a>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Coaching 1h–1h30', 30)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card reveal">
       <div class="price-badge">Intensif</div>
       <div class="price-title">Coaching +1h30</div>
       <div class="price-amount">50€<span>+</span></div>
-      <div class="price-desc">Pour un accompagnement complet et intensif. On va au fond des choses pour construire ensemble votre projet de vie.</div>
-      <a href="#contact" class="price-cta">Réserver</a>
+      <div class="price-desc">Pour un accompagnement complet et intensif. On va au fond des choses pour construire ensemble votre projet.</div>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Coaching +1h30', 50)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card reveal">
       <div class="price-badge">Pack</div>
       <div class="price-title">Atelier CV + Coach</div>
       <div class="price-amount">20€</div>
       <div class="price-desc">Package complet : Atelier CV, lettre de motivation + coaching de 30 minutes maximum inclus.</div>
-      <a href="#contact" class="price-cta">Réserver</a>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Atelier CV + Lettre + Coach', 20)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card reveal">
-      <div class="price-badge">Libération</div>
-      <div class="price-title">Osez Parler</div>
+      <div class="price-badge">Essentiel</div>
+      <div class="price-title">Coaching 30–45 min</div>
       <div class="price-amount">20€</div>
-      <div class="price-desc">Échange pour se libérer des échecs, des doutes ou des traumatismes. Un espace safe et bienveillant juste pour vous.</div>
-      <a href="#contact" class="price-cta">Réserver</a>
+      <div class="price-desc">Séance de coaching scolaire ou professionnel courte et efficace. Idéal pour un point rapide ou une question précise.</div>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Coaching 30–45 min', 20)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card reveal">
       <div class="price-badge">Sur mesure</div>
       <div class="price-title">Suivi Global</div>
       <div class="price-amount" style="font-size:1.8rem">Sur devis</div>
-      <div class="price-desc">CV, lettre de motivation, préparation entretiens, business plan, visio ou présentiel. Tarif selon vos besoins.</div>
+      <div class="price-desc">CV, lettre de motivation, préparation entretiens, business plan, etc. Tarif selon vos besoins.</div>
       <a href="#contact" class="price-cta">Me contacter</a>
     </div>
   </div>
+
+  <!-- PAYMENT METHODS -->
+  <div class="payment-methods reveal">
+    <p class="payment-label">💳 Moyens de paiement acceptés</p>
+    <div class="payment-icons">
+      <div class="pay-icon">
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1A6EBD"/><rect x="14" y="7" width="10" height="10" rx="1" fill="white" opacity="0.9"/><circle cx="12" cy="12" r="5" fill="white" opacity="0.6"/><circle cx="26" cy="12" r="5" fill="white" opacity="0.6"/></svg>
+        <span>Carte Bancaire</span>
+      </div>
+      <div class="pay-icon">
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1A1A1A"/><circle cx="19" cy="12" r="7" fill="white" opacity="0.9"/><path d="M16 12 L19 9 L22 12 L19 15 Z" fill="#1A1A1A"/></svg>
+        <span>Apple Pay</span>
+      </div>
+      <div class="pay-icon">
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#003087"/><text x="5" y="16" font-size="9" fill="white" font-family="Arial" font-weight="bold">Pay</text><text x="18" y="16" font-size="9" fill="#009CDE" font-family="Arial" font-weight="bold">Pal</text></svg>
+        <span>PayPal</span>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- CONTACT -->
@@ -1520,7 +1766,7 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
             <div class="contact-value">nadege.education@gmail.com</div>
           </div>
         </a>
-        <a href="https://www.linkedin.com/in/nadège-augustin" target="_blank" class="contact-item">
+        <a href="https://www.linkedin.com/in/nad%C3%A8ge-augustin-201b0615b/" target="_blank" class="contact-item">
           <div class="contact-icon">💼</div>
           <div>
             <div class="contact-label">LinkedIn</div>
@@ -1544,7 +1790,7 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
       </div>
     </div>
     <div class="contact-form reveal">
-      <div class="form-title">Prenons rendez-vous 🤝</div>
+      <div class="form-title">Prenez rendez-vous 🤝</div>
       <div class="form-subtitle">Je vous répondrai dans les 24 heures</div>
       <div class="form-row">
         <div class="form-group">
@@ -1598,7 +1844,7 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <a href="https://www.instagram.com/nadmotivation" target="_blank" style="color:var(--blue-light);text-decoration:none;font-size:0.85rem">Instagram</a>
       <a href="https://www.tiktok.com/@nadmotivation2" target="_blank" style="color:var(--blue-light);text-decoration:none;font-size:0.85rem">TikTok</a>
-      <a href="https://www.linkedin.com/in/nadège-augustin" target="_blank" style="color:var(--blue-light);text-decoration:none;font-size:0.85rem">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/nad%C3%A8ge-augustin-201b0615b/" target="_blank" style="color:var(--blue-light);text-decoration:none;font-size:0.85rem">LinkedIn</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1721,6 +1967,143 @@ function submitForm() {
     btn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
   }, 1200);
 }
+
+// === CART SYSTEM ===
+let cart = [];
+
+function addToCart(name, price) {
+  // Check if already in cart
+  const existing = cart.find(i => i.name === name);
+  if (existing) {
+    showCartNotif(name + ' déjà dans le panier');
+    return;
+  }
+  cart.push({ name, price });
+  saveCartStats(name);
+  updateCartUI();
+  toggleCart(true);
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cart-badge');
+  const itemsEl = document.getElementById('cart-items');
+  const footer = document.getElementById('cart-footer');
+  const totalEl = document.getElementById('cart-total-amount');
+
+  if (cart.length === 0) {
+    badge.classList.remove('show');
+    badge.textContent = '';
+    itemsEl.innerHTML = '<div class="cart-empty">Votre panier est vide.<br>Ajoutez un service pour commencer ✨</div>';
+    footer.style.display = 'none';
+  } else {
+    badge.classList.add('show');
+    badge.textContent = cart.length;
+    let html = '';
+    cart.forEach((item, i) => {
+      html += `<div class="cart-item">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price}€</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${i})">🗑</button>
+      </div>`;
+    });
+    itemsEl.innerHTML = html;
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    totalEl.textContent = total + '€';
+    footer.style.display = 'block';
+  }
+}
+
+function toggleCart(forceOpen) {
+  const modal = document.getElementById('cart-modal');
+  if (forceOpen === true) {
+    modal.classList.add('open');
+  } else {
+    modal.classList.toggle('open');
+  }
+}
+
+function proceedCheckout() {
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  const items = cart.map(i => i.name).join(', ');
+  // Save order stats
+  saveOrder(items, total);
+  const success = document.getElementById('checkout-success');
+  success.style.display = 'block';
+  success.innerHTML = `✅ Commande de ${total}€ enregistrée !<br><small>Nadège vous contactera pour le paiement via PayPal / carte bancaire.</small>`;
+  document.querySelector('.btn-checkout').disabled = true;
+  setTimeout(() => {
+    cart = [];
+    updateCartUI();
+    toggleCart();
+    success.style.display = 'none';
+    document.querySelector('.btn-checkout').disabled = false;
+  }, 4000);
+}
+
+function saveCartStats(serviceName) {
+  try {
+    const stats = JSON.parse(localStorage.getItem('nadm_cart_stats') || '{}');
+    stats[serviceName] = (stats[serviceName] || 0) + 1;
+    localStorage.setItem('nadm_cart_stats', JSON.stringify(stats));
+  } catch(e) {}
+}
+
+function saveOrder(items, total) {
+  try {
+    const orders = JSON.parse(localStorage.getItem('nadm_orders') || '[]');
+    orders.push({ items, total, date: new Date().toISOString() });
+    localStorage.setItem('nadm_orders', JSON.stringify(orders));
+  } catch(e) {}
+}
+
+function showCartNotif(msg) {
+  const btn = document.getElementById('cart-btn');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '✓ ' + msg;
+  setTimeout(() => { btn.innerHTML = orig; updateCartUI(); }, 2000);
+}
+
 </script>
+
+<!-- CART BUTTON -->
+<button id="cart-btn" onclick="toggleCart()">
+  🛒 Panier
+  <span id="cart-badge"></span>
+</button>
+
+<!-- CART MODAL -->
+<div id="cart-modal">
+  <div class="cart-backdrop" onclick="toggleCart()"></div>
+  <div class="cart-panel">
+    <div class="cart-header">
+      <div class="cart-title">🛒 Mon Panier</div>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div id="cart-items">
+      <div class="cart-empty">Votre panier est vide.<br>Ajoutez un service pour commencer ✨</div>
+    </div>
+    <div id="cart-footer" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span class="cart-total-amount" id="cart-total-amount">0€</span>
+      </div>
+      <button class="btn-checkout" onclick="proceedCheckout()">
+        💳 Procéder au paiement
+      </button>
+      <div class="checkout-success" id="checkout-success">
+        ✅ Redirection vers le paiement...<br>
+        <small>Vous serez redirigé vers PayPal/Stripe.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
