@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paiement refusé — NadMotivation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-dark: #1a6ebd;
+  --blue-light: #4db8f0;
+  --snow: #f7faff;
+  --white: #ffffff;
+  --text-dark: #0d2a4a;
+  --text-mid: #2a5a8a;
+  --red: #ff4757;
+  --red-light: #fff0f1;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--snow);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.page-wrap { width: 100%; max-width: 560px; text-align: center; }
+
+.error-icon {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--red), #ff6b81);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 24px;
+  box-shadow: 0 12px 35px rgba(255,71,87,0.3);
+  animation: shake 0.6s ease;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+.error-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+.error-subtitle {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.reason-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(255,71,87,0.15);
+  text-align: left;
+  box-shadow: 0 8px 30px rgba(255,71,87,0.08);
+}
+.reason-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+.reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(77,184,240,0.08);
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+.reason-item:last-child { border-bottom: none; }
+.reason-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-retry {
+  flex: 1; min-width: 140px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 25px rgba(26,110,189,0.3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-retry:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(26,110,189,0.4); }
+
+.btn-contact {
+  flex: 1; min-width: 140px;
+  padding: 16px 24px;
+  background: var(--white);
+  color: var(--blue-dark);
+  border: 2px solid rgba(26,110,189,0.2);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-contact:hover { border-color: var(--blue-dark); transform: translateY(-2px); }
+
+.contact-note {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: #7a9ab8;
+  line-height: 1.6;
+}
+.contact-note a { color: var(--blue-dark); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 480px) {
+  .actions { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="error-icon">❌</div>
+  <h1 class="error-title">Paiement refusé</h1>
+  <p class="error-subtitle">Votre paiement n'a pas pu être traité.<br>Vérifiez les informations ci-dessous et réessayez.</p>
+
+  <div class="reason-card">
+    <div class="reason-title">⚠️ Causes possibles</div>
+    <div class="reason-item"><div class="reason-dot"></div>Fonds insuffisants sur votre compte bancaire</div>
+    <div class="reason-item"><div class="reason-dot"></div>Informations de carte incorrectes (numéro, date d'expiration, CVV)</div>
+    <div class="reason-item"><div class="reason-dot"></div>Paiement bloqué par votre banque (contactez-la pour autoriser la transaction)</div>
+    <div class="reason-item"><div class="reason-dot"></div>Plafond de paiement en ligne atteint</div>
+    <div class="reason-item"><div class="reason-dot"></div>Carte expirée ou non activée pour les paiements en ligne</div>
+  </div>
+
+  <div class="actions">
+    <a href="index.html#tarifs" class="btn-retry">🔄 Réessayer le paiement</a>
+    <a href="index.html#contact" class="btn-contact">✉️ Contacter Nadège</a>
+  </div>
+
+  <p class="contact-note">
+    Besoin d'aide ? Contactez directement Nadège par email :<br>
+    <a href="mailto:nadege.education@gmail.com">nadege.education@gmail.com</a><br>
+    ou sur Instagram : <a href="https://instagram.com/nadmotivation" target="_blank">@Nadmotivation</a>
+  </p>
+</div>
+</body>
+</html>

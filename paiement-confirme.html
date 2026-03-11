@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paiement confirmé — NadMotivation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --blue-dark: #1a6ebd;
+  --blue-light: #4db8f0;
+  --snow: #f7faff;
+  --white: #ffffff;
+  --text-dark: #0d2a4a;
+  --text-mid: #2a5a8a;
+  --green: #2ed573;
+  --green-dark: #1a9e55;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--snow);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.page-wrap {
+  width: 100%;
+  max-width: 620px;
+}
+
+/* SUCCESS HEADER */
+.success-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.success-icon {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--green), #1abc9c);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 20px;
+  box-shadow: 0 12px 35px rgba(46,213,115,0.35);
+  animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+.success-subtitle {
+  color: var(--text-mid);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* TICKET */
+.ticket {
+  background: var(--white);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(26,110,189,0.12);
+  margin-bottom: 24px;
+  border: 1px solid rgba(77,184,240,0.15);
+}
+
+.ticket-header {
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  padding: 28px 32px;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ticket-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.ticket-num {
+  font-size: 0.78rem;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+.ticket-badge {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* TICKET BODY */
+.ticket-body {
+  padding: 32px;
+}
+
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(77,184,240,0.1);
+  gap: 16px;
+}
+.ticket-row:last-child { border-bottom: none; }
+.ticket-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a9ab8;
+}
+.ticket-value {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-align: right;
+}
+
+.ticket-items {
+  margin: 16px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(77,184,240,0.15);
+}
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--snow);
+  border-bottom: 1px solid rgba(77,184,240,0.1);
+  font-size: 0.9rem;
+}
+.ticket-item:last-child { border-bottom: none; }
+.ticket-item-name { font-weight: 500; color: var(--text-dark); }
+.ticket-item-price { font-weight: 700; color: var(--blue-dark); }
+
+.ticket-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 18px;
+  background: linear-gradient(135deg, rgba(26,110,189,0.06), rgba(77,184,240,0.08));
+  border-radius: 14px;
+  margin-top: 8px;
+}
+.ticket-total-label {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+.ticket-total-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--blue-dark);
+}
+
+/* DASHED SEPARATOR */
+.ticket-dashes {
+  height: 1px;
+  border: none;
+  border-top: 2px dashed rgba(77,184,240,0.25);
+  margin: 4px 0;
+}
+
+/* TICKET FOOTER */
+.ticket-footer {
+  background: var(--snow);
+  padding: 20px 32px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #7a9ab8;
+  border-top: 1px solid rgba(77,184,240,0.1);
+}
+.ticket-footer a {
+  color: var(--blue-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-download {
+  flex: 1;
+  min-width: 160px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  box-shadow: 0 8px 25px rgba(26,110,189,0.3);
+  text-decoration: none;
+}
+.btn-download:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(26,110,189,0.4); }
+
+.btn-home {
+  flex: 1;
+  min-width: 160px;
+  padding: 16px 24px;
+  background: var(--white);
+  color: var(--blue-dark);
+  border: 2px solid rgba(26,110,189,0.2);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.btn-home:hover { border-color: var(--blue-dark); background: rgba(26,110,189,0.04); transform: translateY(-2px); }
+
+/* CONFETTI animation */
+.confetti-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  .ticket-header { flex-direction: column; gap: 12px; }
+  .ticket-body { padding: 24px 20px; }
+  .ticket-footer { padding: 16px 20px; }
+  .actions { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="confetti-wrap" id="confetti"></div>
+
+<div class="page-wrap">
+  <div class="success-header">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">Paiement confirmé !</h1>
+    <p class="success-subtitle">Merci pour votre confiance. Nadège vous contactera très prochainement pour organiser votre séance.</p>
+  </div>
+
+  <div class="ticket" id="ticket-card">
+    <div class="ticket-header">
+      <div>
+        <div class="ticket-brand">NadMotivation</div>
+        <div class="ticket-num">Reçu n° <span id="ticket-number">—</span></div>
+      </div>
+      <div class="ticket-badge">✅ Confirmé</div>
+    </div>
+
+    <div class="ticket-body">
+      <div class="ticket-row">
+        <span class="ticket-label">Date</span>
+        <span class="ticket-value" id="ticket-date">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Client</span>
+        <span class="ticket-value" id="ticket-client">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Email</span>
+        <span class="ticket-value" id="ticket-email">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Moyen de paiement</span>
+        <span class="ticket-value" id="ticket-payment">Carte bancaire</span>
+      </div>
+
+      <div style="margin:20px 0 8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#7a9ab8;">Services commandés</div>
+      <div class="ticket-items" id="ticket-items">
+        <!-- items injected by JS -->
+      </div>
+
+      <div class="ticket-dashes" style="margin:20px 0 12px"></div>
+
+      <div class="ticket-total-row">
+        <span class="ticket-total-label">Total payé</span>
+        <span class="ticket-total-amount" id="ticket-total">—</span>
+      </div>
+    </div>
+
+    <div class="ticket-footer">
+      Merci pour votre achat ! Pour toute question : <a href="mailto:nadege.education@gmail.com">nadege.education@gmail.com</a><br>
+      <span style="margin-top:6px;display:block">Instagram : <a href="https://instagram.com/nadmotivation" target="_blank">@Nadmotivation</a> · TikTok : <a href="https://tiktok.com/@nadmotivation2" target="_blank">@Nadmotivation2</a></span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-download" onclick="downloadPDF()">📄 Télécharger le reçu PDF</button>
+    <a href="index.html" class="btn-home">🏠 Retour au site</a>
+  </div>
+</div>
+
+<script>
+// === LOAD ORDER DATA ===
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get('order') || generateId();
+const orders = JSON.parse(localStorage.getItem('nadm_orders') || '[]');
+const lastOrder = orders[orders.length - 1] || null;
+
+function generateId() {
+  return 'NAD-' + Date.now().toString(36).toUpperCase();
+}
+
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function formatDate(isoStr) {
+  const d = isoStr ? new Date(isoStr) : new Date();
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} à ${pad(d.getHours())}h${pad(d.getMinutes())}`;
+}
+
+// Populate ticket
+document.getElementById('ticket-number').textContent = orderId;
+document.getElementById('ticket-date').textContent = lastOrder ? formatDate(lastOrder.date) : formatDate();
+
+// Try to get client info from localStorage
+const lastContact = JSON.parse(localStorage.getItem('nadm_last_contact') || '{}');
+document.getElementById('ticket-client').textContent = (lastContact.fname && lastContact.lname)
+  ? `${lastContact.fname} ${lastContact.lname}` : 'Client NadMotivation';
+document.getElementById('ticket-email').textContent = lastContact.email || 'nadege.education@gmail.com';
+
+// Items
+const itemsWrap = document.getElementById('ticket-items');
+if (lastOrder && lastOrder.items) {
+  const items = lastOrder.items.split(',').map(s => s.trim()).filter(Boolean);
+  const priceMap = {
+    'Osez Parler – Se libérer': 20,
+    'Coaching 30–45 min': 20,
+    'Coaching 1h–1h30': 30,
+    'Coaching +1h30': 50,
+    'Atelier CV + Lettre + Coaching': 20,
+  };
+  let html = '';
+  items.forEach(item => {
+    const price = priceMap[item] || lastOrder.total;
+    html += `<div class="ticket-item">
+      <span class="ticket-item-name">${item}</span>
+      <span class="ticket-item-price">${price}€</span>
+    </div>`;
+  });
+  itemsWrap.innerHTML = html;
+  document.getElementById('ticket-total').textContent = (lastOrder.total || 0) + '€';
+} else {
+  itemsWrap.innerHTML = '<div class="ticket-item"><span class="ticket-item-name">Service NadMotivation</span><span class="ticket-item-price">—</span></div>';
+  document.getElementById('ticket-total').textContent = '—';
+}
+
+// === CONFETTI ===
+const colors = ['#1a6ebd','#4db8f0','#2ed573','#ffd166','#ff6b6b','#a29bfe'];
+const wrap = document.getElementById('confetti');
+for (let i = 0; i < 60; i++) {
+  const p = document.createElement('div');
+  p.className = 'confetti-piece';
+  p.style.cssText = `
+    left: ${Math.random()*100}%;
+    background: ${colors[Math.floor(Math.random()*colors.length)]};
+    width: ${Math.random()*8+6}px;
+    height: ${Math.random()*8+6}px;
+    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+    animation-duration: ${Math.random()*2+2}s;
+    animation-delay: ${Math.random()*1.5}s;
+  `;
+  wrap.appendChild(p);
+}
+setTimeout(() => wrap.remove(), 5000);
+
+// === PDF DOWNLOAD ===
+async function downloadPDF() {
+  const btn = document.querySelector('.btn-download');
+  btn.textContent = '⏳ Génération en cours...';
+  btn.disabled = true;
+
+  await new Promise(r => setTimeout(r, 300));
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, M = 20;
+  let y = 0;
+
+  // Header background
+  doc.setFillColor(26, 110, 189);
+  doc.rect(0, 0, W, 50, 'F');
+  doc.setFillColor(77, 184, 240);
+  doc.rect(0, 0, W * 0.35, 50, 'F');
+
+  // Logo text
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(22);
+  doc.setFont('helvetica', 'bold');
+  doc.text('NadMotivation', M, 22);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Coaching & Orientation Professionnelle', M, 30);
+
+  // Badge
+  doc.setFillColor(255, 255, 255, 0.2);
+  doc.setDrawColor(255, 255, 255);
+  doc.roundedRect(W - M - 40, 18, 40, 12, 6, 6, 'S');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(9);
+  doc.text('✅ CONFIRMÉ', W - M - 22, 25.5, { align: 'center' });
+
+  y = 62;
+
+  // Title
+  doc.setTextColor(13, 42, 74);
+  doc.setFontSize(20);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Reçu de paiement', M, y);
+  y += 10;
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(122, 154, 184);
+  doc.text(`N° ${document.getElementById('ticket-number').textContent}`, M, y);
+  y += 14;
+
+  // Info rows
+  const rows = [
+    ['Date', document.getElementById('ticket-date').textContent],
+    ['Client', document.getElementById('ticket-client').textContent],
+    ['Email', document.getElementById('ticket-email').textContent],
+    ['Paiement', document.getElementById('ticket-payment').textContent],
+  ];
+
+  rows.forEach(([label, value]) => {
+    doc.setFillColor(247, 250, 255);
+    doc.rect(M, y - 5, W - M*2, 10, 'F');
+    doc.setTextColor(122, 154, 184);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text(label.toUpperCase(), M + 3, y + 1);
+    doc.setTextColor(13, 42, 74);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(value, W - M - 3, y + 1, { align: 'right' });
+    y += 12;
+  });
+
+  y += 8;
+
+  // Services
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(122, 154, 184);
+  doc.text('SERVICES COMMANDÉS', M, y);
+  y += 6;
+
+  const ticketItems = document.querySelectorAll('.ticket-item');
+  ticketItems.forEach((item, i) => {
+    const name = item.querySelector('.ticket-item-name').textContent;
+    const price = item.querySelector('.ticket-item-price').textContent;
+    doc.setFillColor(i % 2 === 0 ? 247 : 255, i % 2 === 0 ? 250 : 255, i % 2 === 0 ? 255 : 255);
+    doc.rect(M, y - 5, W - M*2, 10, 'F');
+    doc.setTextColor(13, 42, 74);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(name, M + 3, y + 1);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(26, 110, 189);
+    doc.text(price, W - M - 3, y + 1, { align: 'right' });
+    y += 12;
+  });
+
+  // Dashed line
+  y += 4;
+  doc.setDrawColor(77, 184, 240);
+  doc.setLineDash([3, 3]);
+  doc.line(M, y, W - M, y);
+  doc.setLineDash([]);
+  y += 10;
+
+  // Total
+  doc.setFillColor(247, 250, 255);
+  doc.roundedRect(M, y - 6, W - M*2, 16, 4, 4, 'F');
+  doc.setDrawColor(77, 184, 240);
+  doc.roundedRect(M, y - 6, W - M*2, 16, 4, 4, 'S');
+  doc.setTextColor(13, 42, 74);
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('TOTAL PAYÉ', M + 5, y + 4);
+  doc.setTextColor(26, 110, 189);
+  doc.setFontSize(16);
+  doc.text(document.getElementById('ticket-total').textContent, W - M - 5, y + 5, { align: 'right' });
+
+  y += 30;
+
+  // Footer
+  doc.setFillColor(247, 250, 255);
+  doc.rect(M, y, W - M*2, 28, 'F');
+  doc.setTextColor(122, 154, 184);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Merci pour votre confiance ! Pour toute question :', M + (W - M*2)/2, y + 8, { align: 'center' });
+  doc.setTextColor(26, 110, 189);
+  doc.setFont('helvetica', 'bold');
+  doc.text('nadege.education@gmail.com', M + (W - M*2)/2, y + 15, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(122, 154, 184);
+  doc.text('Instagram: @Nadmotivation · TikTok: @Nadmotivation2', M + (W - M*2)/2, y + 22, { align: 'center' });
+
+  // Bottom bar
+  doc.setFillColor(26, 110, 189);
+  doc.rect(0, 287, W, 10, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(8);
+  doc.text('NadMotivation © 2026', M, 293);
+  doc.text('nadege.education@gmail.com', W - M, 293, { align: 'right' });
+
+  doc.save(`recu-nadmotivation-${document.getElementById('ticket-number').textContent}.pdf`);
+  btn.innerHTML = '✅ PDF téléchargé !';
+  setTimeout(() => {
+    btn.innerHTML = '📄 Télécharger le reçu PDF';
+    btn.disabled = false;
+  }, 2500);
+}
+</script>
+</body>
+</html>

@@ -218,14 +218,15 @@ nav.scrolled .nav-logo-text { color: var(--blue-dark); }
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.9);
+  color: var(--white);
   transition: color 0.3s;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 0.8rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
-nav.scrolled .nav-links a { color: var(--text-mid); }
+nav.scrolled .nav-links a { color: var(--text-mid); text-shadow: none; }
 .nav-links a:hover { color: var(--blue-light) !important; }
 
 .nav-cta {
@@ -235,7 +236,8 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   border-radius: 50px;
   font-weight: 600 !important;
   transition: all 0.3s !important;
-  box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-shadow: none !important;
 }
 
 nav.scrolled .nav-cta {
@@ -1708,10 +1710,10 @@ nav.scrolled .hamburger span { background: var(--blue-dark); }
     </div>
     <div class="price-card reveal">
       <div class="price-badge">Pack</div>
-      <div class="price-title">Atelier CV + Coach</div>
+      <div class="price-title">Atelier CV + Coaching</div>
       <div class="price-amount">20€</div>
       <div class="price-desc">Package complet : Atelier CV, lettre de motivation + coaching de 30 minutes maximum inclus.</div>
-      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Atelier CV + Lettre + Coach', 20)">🛒 Ajouter au panier</button></div>
+      <div class="price-cta-wrap"><a href="#contact" class="price-cta">Réserver</a><button class="btn-add-cart" onclick="addToCart('Atelier CV + Lettre + Coaching', 20)">🛒 Ajouter au panier</button></div>
     </div>
     <div class="price-card reveal">
       <div class="price-badge">Essentiel</div>
@@ -1869,8 +1871,10 @@ document.body.style.overflow = 'hidden';
 
 // === NAVBAR SCROLL ===
 const nav = document.getElementById('navbar');
+const heroHeight = document.getElementById('hero').offsetHeight;
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
+  const scrolled = window.scrollY > heroHeight - 80;
+  nav.classList.toggle('scrolled', scrolled);
 });
 
 // === SCROLL REVEAL ===
@@ -2033,19 +2037,40 @@ function toggleCart(forceOpen) {
 function proceedCheckout() {
   const total = cart.reduce((s, i) => s + i.price, 0);
   const items = cart.map(i => i.name).join(', ');
-  // Save order stats
   saveOrder(items, total);
+  // Show mini form to collect client name/email before redirecting
+  showCheckoutForm(items, total);
+}
+
+function showCheckoutForm(items, total) {
   const success = document.getElementById('checkout-success');
   success.style.display = 'block';
-  success.innerHTML = `✅ Commande de ${total}€ enregistrée !<br><small>Nadège vous contactera pour le paiement via PayPal / carte bancaire.</small>`;
-  document.querySelector('.btn-checkout').disabled = true;
-  setTimeout(() => {
-    cart = [];
-    updateCartUI();
-    toggleCart();
-    success.style.display = 'none';
-    document.querySelector('.btn-checkout').disabled = false;
-  }, 4000);
+  success.innerHTML = `
+    <div style="text-align:left">
+      <div style="font-weight:700;margin-bottom:12px;font-size:0.95rem;color:var(--text-dark)">Vos coordonnées</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="co-fname" placeholder="Prénom" style="flex:1;padding:10px 14px;border:1.5px solid rgba(77,184,240,0.3);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;">
+        <input id="co-lname" placeholder="Nom" style="flex:1;padding:10px 14px;border:1.5px solid rgba(77,184,240,0.3);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;">
+      </div>
+      <input id="co-email" placeholder="Votre email" type="email" style="width:100%;padding:10px 14px;border:1.5px solid rgba(77,184,240,0.3);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;margin-bottom:12px;">
+      <button onclick="confirmCheckout('${items}',${total})" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--blue-dark),var(--blue-light));color:white;border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:0.92rem;">
+        💳 Confirmer la commande (${total}€)
+      </button>
+    </div>
+  `;
+  document.querySelector('.btn-checkout').style.display = 'none';
+}
+
+function confirmCheckout(items, total) {
+  const fname = document.getElementById('co-fname')?.value || '';
+  const lname = document.getElementById('co-lname')?.value || '';
+  const email = document.getElementById('co-email')?.value || '';
+  // Save contact info for the ticket page
+  localStorage.setItem('nadm_last_contact', JSON.stringify({ fname, lname, email }));
+  cart = [];
+  updateCartUI();
+  // Redirect to confirmation page
+  window.location.href = 'paiement-confirme.html';
 }
 
 function saveCartStats(serviceName) {
