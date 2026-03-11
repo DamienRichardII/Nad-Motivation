@@ -315,17 +315,32 @@ tr:last-child td { border-bottom: none; }
   font-weight: 600;
   margin-top: 10px;
 }
-.paypal-info {
-  background: rgba(0,48,135,0.05);
-  border: 1px solid rgba(0,48,135,0.12);
+.stripe-info {
+  background: rgba(99,91,255,0.06);
+  border: 1px solid rgba(99,91,255,0.18);
   border-radius: 14px;
   padding: 16px 20px;
   margin-bottom: 20px;
   font-size: 0.85rem;
-  color: #003087;
+  color: #4f46e5;
   line-height: 1.6;
 }
-.paypal-info strong { display: block; margin-bottom: 4px; font-size: 0.9rem; }
+.stripe-info strong { display: block; margin-bottom: 4px; font-size: 0.9rem; }
+.stripe-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  background: var(--snow);
+  border: 1px solid rgba(77,184,240,0.2);
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--blue-dark);
+  transition: all 0.2s;
+  width: fit-content;
+}
+.stripe-link:hover { background: rgba(77,184,240,0.1); transform: translateX(4px); }
 
 /* PWD CHANGE */
 .pwd-change-form { max-width: 400px; }
@@ -411,7 +426,7 @@ tr:last-child td { border-bottom: none; }
       <button class="tab-btn active" onclick="switchTab('stats')">📊 Tableau de bord</button>
       <button class="tab-btn" onclick="switchTab('orders')">🛒 Inscriptions</button>
       <button class="tab-btn" onclick="switchTab('services')">📈 Services</button>
-      <button class="tab-btn" onclick="switchTab('payment')">💳 Paiement PayPal</button>
+      <button class="tab-btn" onclick="switchTab('payment')">💳 Paiement Stripe</button>
       <button class="tab-btn" onclick="switchTab('settings')">⚙️ Paramètres</button>
     </div>
 
@@ -655,11 +670,12 @@ function loadDashboard() {
   renderStatsChart('cart-stats-wrap', cartStats);
   renderStatsChart('sold-stats-wrap', soldStats);
 
-  // Load saved paypal config
-  const pp = JSON.parse(localStorage.getItem('nadm_paypal_config') || '{}');
-  if (pp.email) document.getElementById('paypal-email').value = pp.email;
-  if (pp.clientId) document.getElementById('paypal-client-id').value = pp.clientId;
-  if (pp.mode) document.getElementById('paypal-mode').value = pp.mode;
+  // Load saved Stripe config
+  const sc = JSON.parse(localStorage.getItem('nadm_stripe_config') || '{}');
+  if (sc.pk) document.getElementById('stripe-pk').value = sc.pk;
+  if (sc.sk) document.getElementById('stripe-sk').value = sc.sk;
+  if (sc.mode) document.getElementById('stripe-mode').value = sc.mode;
+  if (sc.webhook) document.getElementById('stripe-webhook').value = sc.webhook;
 }
 
 function renderOrdersTable(containerId, orders) {
@@ -706,14 +722,15 @@ function renderStatsChart(containerId, stats) {
 }
 
 // === SETTINGS ===
-function savePaypalConfig() {
+function saveStripeConfig() {
   const config = {
-    email: document.getElementById('paypal-email').value,
-    clientId: document.getElementById('paypal-client-id').value,
-    mode: document.getElementById('paypal-mode').value
+    pk: document.getElementById('stripe-pk').value,
+    sk: document.getElementById('stripe-sk').value,
+    mode: document.getElementById('stripe-mode').value,
+    webhook: document.getElementById('stripe-webhook').value
   };
-  localStorage.setItem('nadm_paypal_config', JSON.stringify(config));
-  showConfirm('paypal-confirm');
+  localStorage.setItem('nadm_stripe_config', JSON.stringify(config));
+  showConfirm('stripe-confirm');
 }
 
 function savePayMethods() { showConfirm('paymethods-confirm'); }
