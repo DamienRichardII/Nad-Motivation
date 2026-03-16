@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /paiement-confirme.html
+Disallow: /paiement-refuse.html
+
+Sitemap: https://nadmotivation.com/sitemap.xml
